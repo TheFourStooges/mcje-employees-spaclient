@@ -21,6 +21,7 @@ const ProductsListPage = (props) => {
     { field: 'basePrice', headerName: 'Base Price', width: 150 },
     { field: 'quantity', headerName: 'Quantity', width: 150 },
     { field: 'categoryId', headerName: 'Category ID', width: 150 },
+    { field: 'updatedAt', headerName: 'Updated At', width: 200 },
   ];
 
   useEffect(() => {
@@ -89,6 +90,7 @@ const ProductsListPage = (props) => {
           left: 'auto',
           position: 'fixed',
         }}
+        onClick={() => navigate('/products/add')}
       >
         <AddIcon />
       </Fab>

@@ -67,6 +67,7 @@ export const loadProducts = (limit, page) => (dispatch, getState) => {
       params: {
         limit,
         page,
+        sortBy: 'updatedAt:desc'
       },
       onStart: productsRequested.type,
       onSuccess: productsReceived.type,

@@ -318,6 +318,10 @@ const ProductForm = (props) => {
           <div className="form-group col">
             <label>Product Type</label>
             <select {...register('productType')} className={'form-control'}>
+              <option hidden disabled selected value>
+                {' '}
+                -- select an option --{' '}
+              </option>
               {attributesEnum.productType.map((selection, idx) => (
                 <option key={selection}>{selection}</option>
               ))}
@@ -329,6 +333,10 @@ const ProductForm = (props) => {
           <div className="form-group col">
             <label>Clasp Type</label>
             <select {...register('claspType')} className={'form-control'}>
+              <option hidden disabled selected value>
+                {' '}
+                -- select an option --{' '}
+              </option>
               {attributesEnum.claspType.map((selection, idx) => (
                 <option key={selection}>{selection}</option>
               ))}
@@ -337,6 +345,10 @@ const ProductForm = (props) => {
           <div className="form-group col">
             <label>Chain Type</label>
             <select {...register('chainType')} className={'form-control'}>
+              <option hidden disabled selected value>
+                {' '}
+                -- select an option --{' '}
+              </option>
               {attributesEnum.chainType.map((selection, idx) => (
                 <option key={selection}>{selection}</option>
               ))}
@@ -348,6 +360,10 @@ const ProductForm = (props) => {
           <div className="form-group col">
             <label>Back Finding</label>
             <select {...register('backFinding')} className={'form-control'}>
+              <option hidden disabled selected value>
+                {' '}
+                -- select an option --{' '}
+              </option>
               {attributesEnum.backFinding.map((selection, idx) => (
                 <option key={selection}>{selection}</option>
               ))}
@@ -356,6 +372,10 @@ const ProductForm = (props) => {
           <div className="form-group col">
             <label>Ring Size</label>
             <select {...register('ringSize')} className={'form-control'}>
+              <option hidden disabled selected value>
+                {' '}
+                -- select an option --{' '}
+              </option>
               {attributesEnum.ringSize.map((selection, idx) => (
                 <option key={selection}>{selection}</option>
               ))}
@@ -375,6 +395,10 @@ const ProductForm = (props) => {
               multiple
               className={'form-control'}
             >
+              <option hidden disabled selected value>
+                {' '}
+                -- select an option --{' '}
+              </option>
               {attributesEnum.materialType.map((selection, idx) => (
                 <option key={selection}>{selection}</option>
               ))}
@@ -389,6 +413,10 @@ const ProductForm = (props) => {
             <div className="form-group col">
               <label>Gem Type</label>
               <select {...register('gemType')} className={'form-control'}>
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.gemType.map((selection, idx) => (
                   <option>{selection}</option>
                 ))}
@@ -397,6 +425,10 @@ const ProductForm = (props) => {
             <div className="form-group col">
               <label>Stone Cut</label>
               <select {...register('stoneCut')} className={'form-control'}>
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.stoneCut.map((selection, idx) => (
                   <option>{selection}</option>
                 ))}
@@ -407,6 +439,10 @@ const ProductForm = (props) => {
             <div className="form-group col">
               <label>Stone Color</label>
               <select {...register('stoneColor')} className={'form-control'}>
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.stoneColor.map((selection, idx) => (
                   <option>{selection}</option>
                 ))}
@@ -415,6 +451,10 @@ const ProductForm = (props) => {
             <div className="form-group col">
               <label>Stone Clarity</label>
               <select {...register('stoneClarity')} className={'form-control'}>
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.stoneClarity.map((selection, idx) => (
                   <option>{selection}</option>
                 ))}
@@ -425,6 +465,10 @@ const ProductForm = (props) => {
             <div className="form-group col">
               <label>Stone Shape</label>
               <select {...register('stoneShape')} className={'form-control'}>
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.stoneShape.map((selection, idx) => (
                   <option>{selection}</option>
                 ))}
@@ -438,6 +482,10 @@ const ProductForm = (props) => {
             <div className="form-group col">
               <label>Pearl Type</label>
               <select {...register('pearlType')} className={'form-control'}>
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.pearlType.map((selection, idx) => (
                   <option key={selection}>{selection}</option>
                 ))}
@@ -446,6 +494,10 @@ const ProductForm = (props) => {
             <div className="form-group col">
               <label>Pearl Color</label>
               <select {...register('pearlColor')} className={'form-control'}>
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.pearlColor.map((selection, idx) => (
                   <option key={selection}>{selection}</option>
                 ))}
@@ -456,6 +508,10 @@ const ProductForm = (props) => {
             <div className="form-group col">
               <label>Pearl Luster</label>
               <select {...register('pearlLuster')} className={'form-control'}>
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.pearlLuster.map((selection, idx) => (
                   <option key={selection}>{selection}</option>
                 ))}
@@ -464,6 +520,10 @@ const ProductForm = (props) => {
             <div className="form-group col">
               <label>Pearl Shape</label>
               <select {...register('pearlShape')} className={'form-control'}>
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.pearlShape.map((selection, idx) => (
                   <option key={selection}>{selection}</option>
                 ))}
@@ -477,6 +537,10 @@ const ProductForm = (props) => {
                 {...register('pearlUniformity')}
                 className={'form-control'}
               >
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.pearlUniformity.map((selection, idx) => (
                   <option key={selection}>{selection}</option>
                 ))}
@@ -488,6 +552,10 @@ const ProductForm = (props) => {
                 {...register('surfaceMarking')}
                 className={'form-control'}
               >
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.surfaceMarking.map((selection, idx) => (
                   <option key={selection}>{selection}</option>
                 ))}
@@ -501,6 +569,10 @@ const ProductForm = (props) => {
                 {...register('stringingMethod')}
                 className={'form-control'}
               >
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.stringingMethod.map((selection, idx) => (
                   <option key={selection}>{selection}</option>
                 ))}
@@ -509,6 +581,10 @@ const ProductForm = (props) => {
             <div className="form-group col">
               <label>Size Per Pearl</label>
               <select {...register('sizePerPearl')} className={'form-control'}>
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.sizePerPearl.map((selection, idx) => (
                   <option key={selection}>{selection}</option>
                 ))}
@@ -519,6 +595,10 @@ const ProductForm = (props) => {
             <div className="form-group col">
               <label>Setting Type</label>
               <select {...register('settingType')} className={'form-control'}>
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.settingType.map((selection, idx) => (
                   <option key={selection}>{selection}</option>
                 ))}
@@ -529,6 +609,10 @@ const ProductForm = (props) => {
             <div className="form-group col">
               <label>Metal Type</label>
               <select {...register('metalType')} className={'form-control'}>
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.metalType.map((selection, idx) => (
                   <option key={selection}>{selection}</option>
                 ))}
@@ -537,6 +621,10 @@ const ProductForm = (props) => {
             <div className="form-group col">
               <label>Metal Stamp</label>
               <select {...register('metalStamp')} className={'form-control'}>
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.metalStamp.map((selection, idx) => (
                   <option key={selection}>{selection}</option>
                 ))}
@@ -547,6 +635,10 @@ const ProductForm = (props) => {
             <div className="form-group col">
               <label>Inscription</label>
               <select {...register('inscription')} className={'form-control'}>
+                <option hidden disabled selected value>
+                  {' '}
+                  -- select an option --{' '}
+                </option>
                 {attributesEnum.inscription.map((selection, idx) => (
                   <option key={selection}>{selection}</option>
                 ))}

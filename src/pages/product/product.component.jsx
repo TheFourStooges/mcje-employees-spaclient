@@ -1,7 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-
 import ProductForm from '../../components/product-form/product-form.component';
 
 const ProductPage = () => {
@@ -16,9 +14,9 @@ const ProductPage = () => {
 
   // const []
 
-  useEffect(() => {
-    console.log(productId, 'view');
-  });
+  // useEffect(() => {
+  //   console.log(productId, 'view');
+  // });
 
   return (
     <>
