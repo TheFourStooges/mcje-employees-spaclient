@@ -175,9 +175,9 @@ const ProductForm = (props) => {
 
     if (isAddMode) {
       console.log(isAddMode, newBody);
-      props.addProduct(fields);
+      props.addProduct(newBody);
     } else {
-      props.updateProduct(id, fields);
+      props.updateProduct(id, newBody);
       console.log(isAddMode, newBody);
     }
   };
@@ -319,7 +319,7 @@ const ProductForm = (props) => {
             <label>Product Type</label>
             <select {...register('productType')} className={'form-control'}>
               {attributesEnum.productType.map((selection, idx) => (
-                <option>{selection}</option>
+                <option key={selection}>{selection}</option>
               ))}
             </select>
           </div>
@@ -330,7 +330,7 @@ const ProductForm = (props) => {
             <label>Clasp Type</label>
             <select {...register('claspType')} className={'form-control'}>
               {attributesEnum.claspType.map((selection, idx) => (
-                <option>{selection}</option>
+                <option key={selection}>{selection}</option>
               ))}
             </select>
           </div>
@@ -338,7 +338,7 @@ const ProductForm = (props) => {
             <label>Chain Type</label>
             <select {...register('chainType')} className={'form-control'}>
               {attributesEnum.chainType.map((selection, idx) => (
-                <option>{selection}</option>
+                <option key={selection}>{selection}</option>
               ))}
             </select>
           </div>
@@ -349,7 +349,7 @@ const ProductForm = (props) => {
             <label>Back Finding</label>
             <select {...register('backFinding')} className={'form-control'}>
               {attributesEnum.backFinding.map((selection, idx) => (
-                <option>{selection}</option>
+                <option key={selection}>{selection}</option>
               ))}
             </select>
           </div>
@@ -357,7 +357,7 @@ const ProductForm = (props) => {
             <label>Ring Size</label>
             <select {...register('ringSize')} className={'form-control'}>
               {attributesEnum.ringSize.map((selection, idx) => (
-                <option>{selection}</option>
+                <option key={selection}>{selection}</option>
               ))}
             </select>
           </div>
@@ -376,7 +376,7 @@ const ProductForm = (props) => {
               className={'form-control'}
             >
               {attributesEnum.materialType.map((selection, idx) => (
-                <option>{selection}</option>
+                <option key={selection}>{selection}</option>
               ))}
             </select>
           </div>
@@ -439,7 +439,7 @@ const ProductForm = (props) => {
               <label>Pearl Type</label>
               <select {...register('pearlType')} className={'form-control'}>
                 {attributesEnum.pearlType.map((selection, idx) => (
-                  <option>{selection}</option>
+                  <option key={selection}>{selection}</option>
                 ))}
               </select>
             </div>
@@ -447,7 +447,7 @@ const ProductForm = (props) => {
               <label>Pearl Color</label>
               <select {...register('pearlColor')} className={'form-control'}>
                 {attributesEnum.pearlColor.map((selection, idx) => (
-                  <option>{selection}</option>
+                  <option key={selection}>{selection}</option>
                 ))}
               </select>
             </div>
@@ -457,7 +457,7 @@ const ProductForm = (props) => {
               <label>Pearl Luster</label>
               <select {...register('pearlLuster')} className={'form-control'}>
                 {attributesEnum.pearlLuster.map((selection, idx) => (
-                  <option>{selection}</option>
+                  <option key={selection}>{selection}</option>
                 ))}
               </select>
             </div>
@@ -465,7 +465,7 @@ const ProductForm = (props) => {
               <label>Pearl Shape</label>
               <select {...register('pearlShape')} className={'form-control'}>
                 {attributesEnum.pearlShape.map((selection, idx) => (
-                  <option>{selection}</option>
+                  <option key={selection}>{selection}</option>
                 ))}
               </select>
             </div>
@@ -478,7 +478,7 @@ const ProductForm = (props) => {
                 className={'form-control'}
               >
                 {attributesEnum.pearlUniformity.map((selection, idx) => (
-                  <option>{selection}</option>
+                  <option key={selection}>{selection}</option>
                 ))}
               </select>
             </div>
@@ -489,7 +489,7 @@ const ProductForm = (props) => {
                 className={'form-control'}
               >
                 {attributesEnum.surfaceMarking.map((selection, idx) => (
-                  <option>{selection}</option>
+                  <option key={selection}>{selection}</option>
                 ))}
               </select>
             </div>
@@ -502,7 +502,7 @@ const ProductForm = (props) => {
                 className={'form-control'}
               >
                 {attributesEnum.stringingMethod.map((selection, idx) => (
-                  <option>{selection}</option>
+                  <option key={selection}>{selection}</option>
                 ))}
               </select>
             </div>
@@ -510,7 +510,7 @@ const ProductForm = (props) => {
               <label>Size Per Pearl</label>
               <select {...register('sizePerPearl')} className={'form-control'}>
                 {attributesEnum.sizePerPearl.map((selection, idx) => (
-                  <option>{selection}</option>
+                  <option key={selection}>{selection}</option>
                 ))}
               </select>
             </div>
@@ -520,7 +520,7 @@ const ProductForm = (props) => {
               <label>Setting Type</label>
               <select {...register('settingType')} className={'form-control'}>
                 {attributesEnum.settingType.map((selection, idx) => (
-                  <option>{selection}</option>
+                  <option key={selection}>{selection}</option>
                 ))}
               </select>
             </div>
@@ -530,7 +530,7 @@ const ProductForm = (props) => {
               <label>Metal Type</label>
               <select {...register('metalType')} className={'form-control'}>
                 {attributesEnum.metalType.map((selection, idx) => (
-                  <option>{selection}</option>
+                  <option key={selection}>{selection}</option>
                 ))}
               </select>
             </div>
@@ -538,7 +538,7 @@ const ProductForm = (props) => {
               <label>Metal Stamp</label>
               <select {...register('metalStamp')} className={'form-control'}>
                 {attributesEnum.metalStamp.map((selection, idx) => (
-                  <option>{selection}</option>
+                  <option key={selection}>{selection}</option>
                 ))}
               </select>
             </div>
@@ -548,7 +548,7 @@ const ProductForm = (props) => {
               <label>Inscription</label>
               <select {...register('inscription')} className={'form-control'}>
                 {attributesEnum.inscription.map((selection, idx) => (
-                  <option>{selection}</option>
+                  <option key={selection}>{selection}</option>
                 ))}
               </select>
             </div>

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { apiCallBegan } from './api';
+import { tokenConfigHeader } from './auth';
 
 // Action Creators and Reducers
 const slice = createSlice({
@@ -74,21 +75,30 @@ export const loadProducts = (limit, page) => (dispatch, getState) => {
   );
 };
 
-export const addProduct = (product) =>
-  apiCallBegan({
-    url,
-    method: 'POST',
-    data: product,
-    onSuccess: productAdded.type,
-  });
+export const addProduct = (product) => (dispatch, getState) => {
+  return dispatch(
+    apiCallBegan({
+      url,
+      method: 'POST',
+      data: product,
+      headers: { ...tokenConfigHeader(getState) },
+      onSuccess: productAdded.type,
+    })
+  );
+};
 
-export const updateProduct = (productId, updateBody) =>
-  apiCallBegan({
-    url: url + '/' + productId,
-    method: 'PATCH',
-    data: updateBody,
-    onSuccess: productUpdated.type,
-  });
+export const updateProduct =
+  (productId, updateBody) => (dispatch, getState) => {
+    return dispatch(
+      apiCallBegan({
+        url: url + '/' + productId,
+        method: 'PATCH',
+        data: updateBody,
+        headers: { ...tokenConfigHeader(getState) },
+        onSuccess: productUpdated.type,
+      })
+    );
+  };
 
 // Selector
 

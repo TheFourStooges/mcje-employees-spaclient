@@ -8,7 +8,7 @@ const api =
   async (action) => {
     if (action.type !== actions.apiCallBegan.type) return next(action);
 
-    const { url, method, data, params, onStart, onSuccess, onError } =
+    const { url, method, data, params, headers, onStart, onSuccess, onError } =
       action.payload;
 
     if (onStart) dispatch({ type: onStart });
@@ -22,6 +22,7 @@ const api =
         method,
         data,
         params,
+        headers,
       });
       // General
       dispatch(actions.apiCallSuccess(response.data));
