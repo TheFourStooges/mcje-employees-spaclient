@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { Fab, Typography } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+
 import { useSelector, useDispatch, connect } from 'react-redux';
 import { loadProducts, getProducts } from '../../store/products';
 
@@ -34,45 +37,62 @@ const ProductsListPage = (props) => {
 
   // console.log(useSelector(getProducts));
 
+  // <div style={{ height: '100%', display: 'flex' }}>
+  //   <DataGrid
+  //     autoHeight
+  //     rows={props.products}
+  //     columns={columns}
+  //     components={{ Toolbar: GridToolbar }}
+  //     rowCount={props.meta.totalResults}
+  //     pageSize={props.meta.limit}
+  //     rowsPerPageOptions={[5, 10, 15, 20]}
+  //     pagination
+  //     paginationMode="server"
+  //     loading={props.meta.loading}
+  //     onPageChange={(newPage) => {
+  //       props.loadProducts(props.meta.limit, newPage + 1);
+  //     }}
+  //     onPageSizeChange={(newPageSize) => {
+  //       props.loadProducts(newPageSize, props.meta.page);
+  //     }}
+  //     onRowDoubleClick={(params, evt, details) =>
+  //       rowDoubleClickHandler(params.id)
+  //     }
+  //   />
+  // </div>
+
   return (
-    // <div style={{ height: '100%', display: 'flex' }}>
-    //   <DataGrid
-    //     autoHeight
-    //     rows={props.products}
-    //     columns={columns}
-    //     components={{ Toolbar: GridToolbar }}
-    //     rowCount={props.meta.totalResults}
-    //     pageSize={props.meta.limit}
-    //     rowsPerPageOptions={[5, 10, 15, 20]}
-    //     pagination
-    //     paginationMode="server"
-    //     loading={props.meta.loading}
-    //     onPageChange={(newPage) => {
-    //       props.loadProducts(props.meta.limit, newPage + 1);
-    //     }}
-    //     onPageSizeChange={(newPageSize) => {
-    //       props.loadProducts(newPageSize, props.meta.page);
-    //     }}
-    //     onRowDoubleClick={(params, evt, details) =>
-    //       rowDoubleClickHandler(params.id)
-    //     }
-    //   />
-    // </div>
-    <DataTable
-      rows={props.products}
-      columns={columns}
-      totalResults={props.meta.totalResults}
-      limit={props.meta.limit}
-      loading={props.meta.loading}
-      loadActionCreator={props.loadProducts}
-      onPageChange={(newPage) => {
-        props.loadProducts(props.meta.limit, newPage + 1);
-      }}
-      onPageSizeChange={(newPageSize) => {
-        props.loadProducts(newPageSize, props.meta.page);
-      }}
-      rowDoubleClickHandler={rowDoubleClickHandler}
-    />
+    <>
+      <DataTable
+        rows={props.products}
+        columns={columns}
+        totalResults={props.meta.totalResults}
+        limit={props.meta.limit}
+        loading={props.meta.loading}
+        loadActionCreator={props.loadProducts}
+        onPageChange={(newPage) => {
+          props.loadProducts(props.meta.limit, newPage + 1);
+        }}
+        onPageSizeChange={(newPageSize) => {
+          props.loadProducts(newPageSize, props.meta.page);
+        }}
+        rowDoubleClickHandler={rowDoubleClickHandler}
+      />
+      <Fab
+        color="primary"
+        aria-label="add"
+        style={{
+          margin: 0,
+          top: 'auto',
+          right: 20,
+          bottom: 20,
+          left: 'auto',
+          position: 'fixed',
+        }}
+      >
+        <AddIcon />
+      </Fab>
+    </>
   );
 };
 
