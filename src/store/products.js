@@ -27,26 +27,15 @@ const slice = createSlice({
 
     // action => action handler
     productAdded: (products, action) => {
-      products.push({
-        id: action.payload.id,
-        name: action.payload.name,
-        slug: action.payload.slug,
-        description: action.payload.description,
-        isActive: action.payload.isActive,
-        basePrice: action.payload.basePrice,
-        quantity: action.payload.quantity,
-        properties: action.payload.properties,
-        createdAt: action.payload.createdAt,
-        updatedAt: action.payload.updatedAt,
-        deletedAt: action.payload.deletedAt,
-        categoryId: action.payload.categoryId,
-        assets: action.payload.assets,
-      });
+      products.list.push(action.payload);
     },
 
-    metaChanged: (products, action) => {
-
-    }
+    productUpdated: (products, action) => {
+      const index = products.list.findIndex(
+        (product) => product.id === action.payload.id
+      );
+      products.list[index] = action.payload;
+    },
   },
 });
 
@@ -56,6 +45,7 @@ export const {
   productsRequestFailed,
 
   productAdded,
+  productUpdated,
 } = slice.actions;
 export default slice.reducer;
 
@@ -68,23 +58,37 @@ const url = '/product';
  * Dispatch productsRequestFailed on failure
  * @returns
  */
-export const loadProducts =
-  (limit, page) =>
-  (dispatch, getState) => {
-    // console.log(limit, page);
-    return dispatch(
-      apiCallBegan({
-        url,
-        params: {
-          limit,
-          page,
-        },
-        onStart: productsRequested.type,
-        onSuccess: productsReceived.type,
-        onError: productsRequestFailed.type,
-      })
-    );
-  };
+export const loadProducts = (limit, page) => (dispatch, getState) => {
+  // console.log(limit, page);
+  return dispatch(
+    apiCallBegan({
+      url,
+      params: {
+        limit,
+        page,
+      },
+      onStart: productsRequested.type,
+      onSuccess: productsReceived.type,
+      onError: productsRequestFailed.type,
+    })
+  );
+};
+
+export const addProduct = (product) =>
+  apiCallBegan({
+    url,
+    method: 'POST',
+    data: product,
+    onSuccess: productAdded.type,
+  });
+
+export const updateProduct = (productId, updateBody) =>
+  apiCallBegan({
+    url: url + '/' + productId,
+    method: 'PATCH',
+    data: updateBody,
+    onSuccess: productUpdated.type,
+  });
 
 // Selector
 
