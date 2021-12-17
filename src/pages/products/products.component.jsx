@@ -1,10 +1,7 @@
-import { Container, Fab, Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import React from 'react';
 
-import AddIcon from '@mui/icons-material/Add';
-
-// import { Button } from '@mui/material'
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 const ProductsPage = () => {
   return (

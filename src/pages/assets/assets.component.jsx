@@ -1,14 +1,13 @@
 import { Container, Typography } from '@mui/material';
 import React from 'react';
-
 import { Outlet } from 'react-router-dom';
 
-const CategoriesPage = () => {
+const AssetsPage = () => {
   return (
     <div>
       <Container maxWidth={false}>
         <div>
-          <Typography variant="h5">Categories</Typography>
+          <Typography variant="h5">Assets</Typography>
         </div>
         <br />
         <Outlet />
@@ -17,4 +16,4 @@ const CategoriesPage = () => {
   );
 };
 
-export default CategoriesPage;
+export default AssetsPage;

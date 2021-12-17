@@ -37,6 +37,12 @@ const slice = createSlice({
       );
       products.list[index] = action.payload;
     },
+
+    productDeleted: (products, action) => {
+      products.list = products.list.filter(
+        (product) => product.id !== action.payload.id
+      );
+    },
   },
 });
 
@@ -47,6 +53,7 @@ export const {
 
   productAdded,
   productUpdated,
+  productDeleted,
 } = slice.actions;
 export default slice.reducer;
 
@@ -67,7 +74,7 @@ export const loadProducts = (limit, page) => (dispatch, getState) => {
       params: {
         limit,
         page,
-        sortBy: 'updatedAt:desc'
+        sortBy: 'updatedAt:desc',
       },
       onStart: productsRequested.type,
       onSuccess: productsReceived.type,
@@ -100,6 +107,17 @@ export const updateProduct =
       })
     );
   };
+
+export const deleteProduct = (productId) => (dispatch, getState) => {
+  return dispatch(
+    apiCallBegan({
+      url: url + '/' + productId,
+      method: 'DELETE',
+      headers: { ...tokenConfigHeader(getState) },
+      onSuccess: productDeleted.type,
+    })
+  );
+};
 
 // Selector
 

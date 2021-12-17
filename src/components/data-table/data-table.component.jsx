@@ -1,9 +1,18 @@
-import React from 'react'
+import React from 'react';
 
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 const DataTable = (props) => {
-  const { rows, columns, totalResults, limit, loading, onPageChange, onPageSizeChange, rowDoubleClickHandler } = props
+  const {
+    rows,
+    columns,
+    totalResults,
+    limit,
+    loading,
+    onPageChange,
+    onPageSizeChange,
+    rowDoubleClickHandler,
+  } = props;
 
   return (
     <div style={{ height: '100%', display: 'flex' }}>
@@ -25,7 +34,7 @@ const DataTable = (props) => {
         }
       />
     </div>
-  )
-}
+  );
+};
 
-export default DataTable
+export default DataTable;

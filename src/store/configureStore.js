@@ -9,7 +9,11 @@ export default function () {
   return configureStore({
     reducer,
     middleware: [
-      ...getDefaultMiddleware(),
+      ...getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: ['api/callBegan'],
+        },
+      }),
       // logger({ destination: "console" }),
       toast,
       api,

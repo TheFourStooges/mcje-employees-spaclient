@@ -15,6 +15,7 @@ const Drawer = () => {
   const items = [
     { name: 'Orders', linkTo: '/orders' },
     { name: 'Products', linkTo: '/products' },
+    { name: 'Assets', linkTo: '/assets' },
     { name: 'Categories', linkTo: '/categories' },
     { name: 'Customers', linkTo: '/customers' },
     { name: 'Shipping Methods', linkTo: '/shipping-methods' },

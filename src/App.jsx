@@ -19,12 +19,19 @@ import CategoryAdd from './pages/category-add/category-add.component';
 import CategoriesListPage from './pages/categories-list/categories-list.component';
 
 import LoginPage from './pages/login/login.component';
+
 import OrdersPage from './pages/orders/orders.component';
 import OrderPage from './pages/order/order.component';
 import OrdersListPage from './pages/orders-list/orders-list.component';
+
 import CustomersPage from './pages/customers/customers.component';
 import CustomerPage from './pages/customer/customer.component';
 import CustomersListPage from './pages/customers-list/customers-list.component';
+
+import AssetsPage from './pages/assets/assets.component';
+import AssetPage from './pages/asset/asset.component';
+import AssetsListPage from './pages/assets-list/assets-list.component';
+import AssetAddPage from './pages/asset-add/asset-add.component';
 
 function App(props) {
   useEffect(() => {
@@ -60,6 +67,12 @@ function App(props) {
           <Route path="customers" element={<CustomersPage />}>
             <Route path=":customerId" element={<CustomerPage />} />
             <Route index element={<CustomersListPage />} />
+          </Route>
+
+          <Route path="assets" element={<AssetsPage />}>
+            <Route path=":assetId" element={<AssetPage />} />
+            <Route path="add" element={<AssetAddPage />} />
+            <Route index element={<AssetsListPage />} />
           </Route>
         </Route>
       </Routes>
