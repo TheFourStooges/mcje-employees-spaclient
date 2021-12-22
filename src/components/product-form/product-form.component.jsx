@@ -9,7 +9,26 @@ import { useSelector, useDispatch, connect } from 'react-redux';
 import { addProduct, updateProduct, deleteProduct } from '../../store/products';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Fab, Typography } from '@mui/material';
+import {
+  Container,
+  Fab,
+  Typography,
+  Paper,
+  ImageList,
+  ImageListItem,
+  Box,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material';
+
+import {
+  FormInputText,
+  FormInputDropdown,
+  FormInputMultiCheckbox,
+} from '../form-components';
 
 import config from '../../config/config';
 import attributesEnum from '../../config/attributesEnum';
@@ -107,6 +126,7 @@ const ProductForm = (props) => {
     getValues,
     errors,
     formState,
+    control,
   } = useForm({
     resolver: yupResolver(createValidationSchema),
   });
@@ -136,6 +156,7 @@ const ProductForm = (props) => {
       surfaceMarking,
       pearlUniformity,
       stringingMethod,
+      categorySlug,
       ...restOfBody
     } = fields;
 
@@ -166,6 +187,9 @@ const ProductForm = (props) => {
         pearlUniformity,
         stringingMethod,
       },
+      categoryId: {
+        slug: categorySlug,
+      },
     };
 
     if (isAddMode) {
@@ -188,6 +212,33 @@ const ProductForm = (props) => {
   };
 
   const [product, setProduct] = useState({});
+  const [categories, setCategories] = useState([]);
+  const [assets, setAssets] = useState([]);
+  const [imageDialogOpen, setImageDialogOpen] = useState(false);
+
+  const handleImageDlgOpen = () => setImageDialogOpen(true);
+  const handleImageDlgClose = () => setImageDialogOpen(false);
+  const handleImageDlgSubmit = (images) => {
+    setAssets(images);
+    setImageDialogOpen(false);
+  };
+
+  const SelectImagesDialog = ({ onSubmit, onClose }) => {
+    // console.log('default values', defaultValues);
+
+    return (
+      <Dialog open={imageDialogOpen} onClose={onClose}>
+        <DialogTitle>Select Images to be associated</DialogTitle>
+        <DialogContent>
+          Lorem ipsum dolor sit amet.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={handleSubmit(onSubmit)}>Save Changes</Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
 
   useEffect(() => {
     if (!isAddMode) {
@@ -210,7 +261,7 @@ const ProductForm = (props) => {
           //   setFieldValue(field, user[field], false)
           // );
 
-          // console.log(data);
+          console.log(data);
 
           const firstLevel = [
             'name',
@@ -222,6 +273,9 @@ const ProductForm = (props) => {
           ];
           // Set form values
           firstLevel.forEach((field) => setValue(field, data[field]));
+
+          // console.log(data['category']['slug']);
+          setValue('categorySlug', data['category']['slug']);
 
           const propertiesLevel = [
             'gemType',
@@ -252,432 +306,562 @@ const ProductForm = (props) => {
             setValue(field, data['properties'][field])
           );
 
+          console.log(data.assets);
           setProduct(data);
+          setAssets(data.assets);
         });
     }
+
+    axios
+      .request({
+        baseURL: config.baseUrl,
+        url: `/category`,
+        method: 'GET',
+        params: {
+          limit: 100,
+        },
+      })
+      .then(({ data }) => setCategories(data.data));
   }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
-      <h1>{isAddMode ? 'Add Product' : 'Edit Product'}</h1>
+      <Typography variant="h5">
+        {isAddMode ? 'Add Product' : 'Edit Product'}
+      </Typography>
+      <div className="row">
+        <div className="col-xl-8">
+          <Paper className="card">
+            <div className="card__header">
+              <div className="card__header__title">Details</div>
+            </div>
 
-      <div>
-        <div className="row">
-          <div className="form-group col">
-            <label>Product Name</label>
-            <input
-              {...register('name')}
-              type="text"
-              className={`form-control`}
-            />
-          </div>
-        </div>
+            <div>
+              <div className="row">
+                <div className="form-group col">
+                  <FormInputText
+                    name="name"
+                    control={control}
+                    label="Product Name"
+                  />
+                </div>
+              </div>
 
-        <div className="row">
-          <div className="form-group col">
-            <label>Slug</label>
-            <input
-              {...register('slug')}
-              type="text"
-              className={`form-control`}
-            />
-          </div>
-          <div className="form-group col">
-            <label>Quantity</label>
-            <input
-              {...register('quantity')}
-              type="number"
-              className={`form-control`}
-            />
-          </div>
-        </div>
+              <div className="row">
+                <div className="form-group col">
+                  <FormInputText name="slug" control={control} label="Slug" />
+                </div>
+                <div className="form-group col">
+                  <FormInputText
+                    name="quantity"
+                    control={control}
+                    label="Quantity"
+                    type="number"
+                  />
+                </div>
+              </div>
 
-        <div className="row">
-          <div className="form-group col">
-            <label>Description</label>
-            <textarea {...register('description')} className={'form-control'} />
-          </div>
-        </div>
-      </div>
+              <div className="row">
+                <div className="form-group col">
+                  <FormInputText
+                    name="description"
+                    control={control}
+                    label="Description"
+                    multiline={true}
+                  />
+                </div>
+              </div>
+            </div>
+          </Paper>
 
-      <br />
+          <Paper className="card">
+            <div className="card__header">
+              <div className="card__header__title">Price</div>
+            </div>
+            <div>
+              <div className="row">
+                <div className="form-group col">
+                  <FormInputText
+                    name="basePrice"
+                    control={control}
+                    label="Base Price"
+                    type="number"
+                    inputProps={{ step: '0.01' }}
+                  />
+                </div>
+              </div>
+            </div>
+          </Paper>
 
-      <div>
-        <div className="row">
-          <div className="form-group col">
-            <label>Base Price</label>
-            <input
-              {...register('basePrice')}
-              type="number"
-              step="0.1"
-              className={'form-control'}
-            />
-          </div>
-        </div>
-      </div>
-
-      <br />
-
-      <div>
-        <div className="row">
-          <div className="form-group col">
-            <label>Product Type</label>
-            <select {...register('productType')} className={'form-control'}>
+          <Paper className="card">
+            <div className="card__header">
+              <div className="card__header__title">Category</div>
+            </div>
+            <label>Category</label>
+            <select {...register('categorySlug')} className={'form-control'}>
               <option hidden disabled selected value>
                 {' '}
                 -- select an option --{' '}
               </option>
-              {attributesEnum.productType.map((selection, idx) => (
-                <option key={selection}>{selection}</option>
+              {categories.map((selection, idx) => (
+                <option key={selection.slug}>{selection.slug}</option>
               ))}
             </select>
-          </div>
+          </Paper>
+
+          <Paper className="card">
+            <div className="card__header">
+              <div className="card__header__title">
+                Attributes &ndash; Product
+              </div>
+            </div>
+            <div>
+              <div className="row">
+                <div className="form-group col">
+                  <label>Product Type</label>
+                  <select
+                    {...register('productType')}
+                    className={'form-control'}
+                  >
+                    <option hidden disabled selected value>
+                      {' '}
+                      -- select an option --{' '}
+                    </option>
+                    {attributesEnum.productType.map((selection, idx) => (
+                      <option key={selection}>{selection}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="form-group col">
+                  <label>Clasp Type</label>
+                  <select {...register('claspType')} className={'form-control'}>
+                    <option hidden disabled selected value>
+                      {' '}
+                      -- select an option --{' '}
+                    </option>
+                    {attributesEnum.claspType.map((selection, idx) => (
+                      <option key={selection}>{selection}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group col">
+                  <label>Chain Type</label>
+                  <select {...register('chainType')} className={'form-control'}>
+                    <option hidden disabled selected value>
+                      {' '}
+                      -- select an option --{' '}
+                    </option>
+                    {attributesEnum.chainType.map((selection, idx) => (
+                      <option key={selection}>{selection}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="form-group col">
+                  <label>Back Finding</label>
+                  <select
+                    {...register('backFinding')}
+                    className={'form-control'}
+                  >
+                    <option hidden disabled selected value>
+                      {' '}
+                      -- select an option --{' '}
+                    </option>
+                    {attributesEnum.backFinding.map((selection, idx) => (
+                      <option key={selection}>{selection}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group col">
+                  <label>Ring Size</label>
+                  <select {...register('ringSize')} className={'form-control'}>
+                    <option hidden disabled selected value>
+                      {' '}
+                      -- select an option --{' '}
+                    </option>
+                    {attributesEnum.ringSize.map((selection, idx) => (
+                      <option key={selection}>{selection}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </Paper>
+
+          <Paper className="card">
+            <div className="card__header">
+              <div className="card__header__title">Attributes: Material</div>
+            </div>
+            <div>
+              <div className="row">
+                <div className="form-group col">
+                  <label>Material Type</label>
+                  <select
+                    {...register('materialType')}
+                    multiple
+                    className={'form-control'}
+                  >
+                    <option hidden disabled selected value>
+                      {' '}
+                      -- select an option --{' '}
+                    </option>
+                    {attributesEnum.materialType.map((selection, idx) => (
+                      <option key={selection}>{selection}</option>
+                    ))}
+                  </select>
+                  {/* <FormInputMultiCheckbox
+                    name="materialType"
+                    control={control}
+                    setValue={setValue}
+                    label="Material Types"
+                    options={attributesEnum.materialType.map((type) => ({
+                      label: type,
+                      value: type,
+                    }))}
+                  /> */}
+                </div>
+              </div>
+
+              <br />
+
+              <div>
+                <div className="row">
+                  <div className="form-group col">
+                    <label>Gem Type</label>
+                    <select {...register('gemType')} className={'form-control'}>
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.gemType.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group col">
+                    <label>Stone Cut</label>
+                    <select
+                      {...register('stoneCut')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.stoneCut.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="form-group col">
+                    <label>Stone Color</label>
+                    <select
+                      {...register('stoneColor')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.stoneColor.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group col">
+                    <label>Stone Clarity</label>
+                    <select
+                      {...register('stoneClarity')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.stoneClarity.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="form-group col">
+                    <label>Stone Shape</label>
+                    <select
+                      {...register('stoneShape')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.stoneShape.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div className="row">
+                  <div className="form-group col">
+                    <label>Pearl Type</label>
+                    <select
+                      {...register('pearlType')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.pearlType.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group col">
+                    <label>Pearl Color</label>
+                    <select
+                      {...register('pearlColor')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.pearlColor.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="form-group col">
+                    <label>Pearl Luster</label>
+                    <select
+                      {...register('pearlLuster')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.pearlLuster.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group col">
+                    <label>Pearl Shape</label>
+                    <select
+                      {...register('pearlShape')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.pearlShape.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="form-group col">
+                    <label>Pearl Uniformity</label>
+                    <select
+                      {...register('pearlUniformity')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.pearlUniformity.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group col">
+                    <label>Surface Marking</label>
+                    <select
+                      {...register('surfaceMarking')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.surfaceMarking.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="form-group col">
+                    <label>Stringing Method</label>
+                    <select
+                      {...register('stringingMethod')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.stringingMethod.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group col">
+                    <label>Size Per Pearl</label>
+                    <select
+                      {...register('sizePerPearl')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.sizePerPearl.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="form-group col">
+                    <label>Setting Type</label>
+                    <select
+                      {...register('settingType')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.settingType.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="form-group col">
+                    <label>Metal Type</label>
+                    <select
+                      {...register('metalType')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.metalType.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group col">
+                    <label>Metal Stamp</label>
+                    <select
+                      {...register('metalStamp')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.metalStamp.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="form-group col">
+                    <label>Inscription</label>
+                    <select
+                      {...register('inscription')}
+                      className={'form-control'}
+                    >
+                      <option hidden disabled selected value>
+                        {' '}
+                        -- select an option --{' '}
+                      </option>
+                      {attributesEnum.inscription.map((selection, idx) => (
+                        <option key={selection}>{selection}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* // End */}
+            </div>
+          </Paper>
+
+          <Paper className="card">
+            <div className="card__header">
+              <div className="card__header__title">Images</div>
+              <Button onClick={handleImageDlgOpen}>Select</Button>
+            </div>
+            <Box sx={{ width: '100%', height: 500, overflowY: 'scroll' }}>
+              <ImageList variant="masonry" cols={3} gap={8}>
+                {assets.map((asset) => (
+                  <ImageListItem key={asset.id}>
+                    <img
+                      src={`${config.serverHost}${asset.path}`}
+                      alt={asset.description}
+                      loading="lazy"
+                    />
+                  </ImageListItem>
+                ))}
+              </ImageList>
+            </Box>
+
+            <SelectImagesDialog onSubmit={handleImageDlgSubmit} onClose={handleImageDlgClose} />
+          </Paper>
         </div>
 
-        <div className="row">
-          <div className="form-group col">
-            <label>Clasp Type</label>
-            <select {...register('claspType')} className={'form-control'}>
-              <option hidden disabled selected value>
-                {' '}
-                -- select an option --{' '}
-              </option>
-              {attributesEnum.claspType.map((selection, idx) => (
-                <option key={selection}>{selection}</option>
-              ))}
-            </select>
-          </div>
-          <div className="form-group col">
-            <label>Chain Type</label>
-            <select {...register('chainType')} className={'form-control'}>
-              <option hidden disabled selected value>
-                {' '}
-                -- select an option --{' '}
-              </option>
-              {attributesEnum.chainType.map((selection, idx) => (
-                <option key={selection}>{selection}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="form-group col">
-            <label>Back Finding</label>
-            <select {...register('backFinding')} className={'form-control'}>
-              <option hidden disabled selected value>
-                {' '}
-                -- select an option --{' '}
-              </option>
-              {attributesEnum.backFinding.map((selection, idx) => (
-                <option key={selection}>{selection}</option>
-              ))}
-            </select>
-          </div>
-          <div className="form-group col">
-            <label>Ring Size</label>
-            <select {...register('ringSize')} className={'form-control'}>
-              <option hidden disabled selected value>
-                {' '}
-                -- select an option --{' '}
-              </option>
-              {attributesEnum.ringSize.map((selection, idx) => (
-                <option key={selection}>{selection}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <br />
-
-      <div>
-        <div className="row">
-          <div className="form-group col">
-            <label>Material Type</label>
-            <select
-              {...register('materialType')}
-              multiple
-              className={'form-control'}
-            >
-              <option hidden disabled selected value>
-                {' '}
-                -- select an option --{' '}
-              </option>
-              {attributesEnum.materialType.map((selection, idx) => (
-                <option key={selection}>{selection}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <br />
-
-        <div>
-          <div className="row">
-            <div className="form-group col">
-              <label>Gem Type</label>
-              <select {...register('gemType')} className={'form-control'}>
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.gemType.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group col">
-              <label>Stone Cut</label>
-              <select {...register('stoneCut')} className={'form-control'}>
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.stoneCut.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="row">
-            <div className="form-group col">
-              <label>Stone Color</label>
-              <select {...register('stoneColor')} className={'form-control'}>
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.stoneColor.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group col">
-              <label>Stone Clarity</label>
-              <select {...register('stoneClarity')} className={'form-control'}>
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.stoneClarity.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="row">
-            <div className="form-group col">
-              <label>Stone Shape</label>
-              <select {...register('stoneShape')} className={'form-control'}>
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.stoneShape.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div className="row">
-            <div className="form-group col">
-              <label>Pearl Type</label>
-              <select {...register('pearlType')} className={'form-control'}>
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.pearlType.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group col">
-              <label>Pearl Color</label>
-              <select {...register('pearlColor')} className={'form-control'}>
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.pearlColor.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="row">
-            <div className="form-group col">
-              <label>Pearl Luster</label>
-              <select {...register('pearlLuster')} className={'form-control'}>
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.pearlLuster.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group col">
-              <label>Pearl Shape</label>
-              <select {...register('pearlShape')} className={'form-control'}>
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.pearlShape.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="row">
-            <div className="form-group col">
-              <label>Pearl Uniformity</label>
-              <select
-                {...register('pearlUniformity')}
-                className={'form-control'}
+        {/* Submit and Reset button  */}
+        <div className="col-xl-4">
+          <Paper className="card">
+            <div className="form-group">
+              <button
+                type="submit"
+                disabled={formState.isSubmitting}
+                className="btn btn-primary"
               >
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.pearlUniformity.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group col">
-              <label>Surface Marking</label>
-              <select
-                {...register('surfaceMarking')}
-                className={'form-control'}
+                {formState.isSubmitting && (
+                  <span className="spinner-border spinner-border-sm mr-1"></span>
+                )}
+                Save
+              </button>
+              <button
+                type="button"
+                disabled={formState.isSubmitting}
+                className="btn"
+                onClick={onDelete}
               >
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.surfaceMarking.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
+                Delete
+              </button>
+              <Link to={isAddMode ? '.' : '..'} className="btn btn-link">
+                Cancel
+              </Link>
             </div>
-          </div>
-          <div className="row">
-            <div className="form-group col">
-              <label>Stringing Method</label>
-              <select
-                {...register('stringingMethod')}
-                className={'form-control'}
-              >
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.stringingMethod.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group col">
-              <label>Size Per Pearl</label>
-              <select {...register('sizePerPearl')} className={'form-control'}>
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.sizePerPearl.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="row">
-            <div className="form-group col">
-              <label>Setting Type</label>
-              <select {...register('settingType')} className={'form-control'}>
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.settingType.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="row">
-            <div className="form-group col">
-              <label>Metal Type</label>
-              <select {...register('metalType')} className={'form-control'}>
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.metalType.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group col">
-              <label>Metal Stamp</label>
-              <select {...register('metalStamp')} className={'form-control'}>
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.metalStamp.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="row">
-            <div className="form-group col">
-              <label>Inscription</label>
-              <select {...register('inscription')} className={'form-control'}>
-                <option hidden disabled selected value>
-                  {' '}
-                  -- select an option --{' '}
-                </option>
-                {attributesEnum.inscription.map((selection, idx) => (
-                  <option key={selection}>{selection}</option>
-                ))}
-              </select>
-            </div>
-          </div>
+          </Paper>
         </div>
-
-        {/* // End */}
-      </div>
-
-      {/* Submit and Reset button  */}
-      <div className="form-group">
-        <button
-          type="submit"
-          disabled={formState.isSubmitting}
-          className="btn btn-primary"
-        >
-          {formState.isSubmitting && (
-            <span className="spinner-border spinner-border-sm mr-1"></span>
-          )}
-          Save
-        </button>
-        <button
-          type="button"
-          disabled={formState.isSubmitting}
-          className="btn"
-          onClick={onDelete}
-        >
-          Delete
-        </button>
-        <Link to={isAddMode ? '.' : '..'} className="btn btn-link">
-          Cancel
-        </Link>
       </div>
     </form>
   );
