@@ -114,7 +114,7 @@ const AssetForm = (props) => {
   }, []);
 
   return (
-    <Container maxWidth="lg">
+    <>
       <div>
         <img
           src={asset.url ? asset.url : config.serverHost + asset.path}
@@ -215,7 +215,7 @@ const AssetForm = (props) => {
           </Link>
         </div>
       </form>
-    </Container>
+    </>
   );
 };
 

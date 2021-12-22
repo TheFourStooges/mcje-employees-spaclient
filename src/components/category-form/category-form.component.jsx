@@ -103,72 +103,67 @@ const CategoryForm = (props) => {
   }, []);
 
   return (
-    <Container maxWidth="lg">
-      <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
-        <h1>{isAddMode ? 'Add Category' : 'Edit Category'}</h1>
+    <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
+      <h1>{isAddMode ? 'Add Category' : 'Edit Category'}</h1>
 
-        <div>
-          <div className="row">
-            <div className="form-group col">
-              <label>Category Name</label>
-              <input
-                {...register('name')}
-                type="text"
-                className={`form-control`}
-              />
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="form-group col">
-              <label>Slug</label>
-              <input
-                {...register('slug')}
-                type="text"
-                className={`form-control`}
-              />
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="form-group col">
-              <label>Description</label>
-              <textarea
-                {...register('description')}
-                className={'form-control'}
-              />
-            </div>
+      <div>
+        <div className="row">
+          <div className="form-group col">
+            <label>Category Name</label>
+            <input
+              {...register('name')}
+              type="text"
+              className={`form-control`}
+            />
           </div>
         </div>
 
-        {/* // End */}
-
-        {/* Submit and Reset button  */}
-        <div className="form-group">
-          <button
-            type="submit"
-            disabled={formState.isSubmitting}
-            className="btn btn-primary"
-          >
-            {formState.isSubmitting && (
-              <span className="spinner-border spinner-border-sm mr-1"></span>
-            )}
-            Save
-          </button>
-          <button
-            type="button"
-            disabled={formState.isSubmitting}
-            className="btn"
-            onClick={onDelete}
-          >
-            Delete
-          </button>
-          <Link to={isAddMode ? '.' : '..'} className="btn btn-link">
-            Cancel
-          </Link>
+        <div className="row">
+          <div className="form-group col">
+            <label>Slug</label>
+            <input
+              {...register('slug')}
+              type="text"
+              className={`form-control`}
+            />
+          </div>
         </div>
-      </form>
-    </Container>
+
+        <div className="row">
+          <div className="form-group col">
+            <label>Description</label>
+            <textarea {...register('description')} className={'form-control'} />
+          </div>
+        </div>
+      </div>
+
+      {/* // End */}
+
+      {/* Submit and Reset button  */}
+      <div className="form-group">
+        <button
+          type="submit"
+          disabled={formState.isSubmitting}
+          className="btn btn-primary"
+        >
+          {formState.isSubmitting && (
+            <span className="spinner-border spinner-border-sm mr-1"></span>
+          )}
+          Save
+        </button>
+        <button
+          type="button"
+          disabled={formState.isSubmitting}
+          className="btn"
+          onClick={onDelete}
+        >
+          Delete
+        </button>
+        <Link to={isAddMode ? '.' : '..'} className="btn btn-link">
+          Cancel
+        </Link>
+      </div>
+    </form>
   );
 };
 
