@@ -23,7 +23,7 @@ import { useSelector, connect } from 'react-redux';
 import { getAccessToken } from '../../store/auth';
 import { updateOrder } from '../../store/orders';
 import FormInputText from '../form-components/FormInputText';
-import './order-view.styles.scss';
+import '../../scss/card.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const DetailsPane = ({ orderData }) => {
