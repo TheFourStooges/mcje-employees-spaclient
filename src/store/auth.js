@@ -22,7 +22,7 @@ const slice = createSlice({
     },
     refreshTokenSuccess: (auth, action) => {
       localStorage.setItem('refreshToken', action.payload.refresh.token);
-      auth.user = action.payload.user;
+      // auth.user = action.payload.user;
       auth.accessToken = action.payload.access.token;
       auth.refreshToken = action.payload.refresh.token;
       auth.authenticated = true;
@@ -124,6 +124,7 @@ export const logout = () => (dispatch, getState) => {
   );
 };
 
+// Utility Function
 export const tokenConfigHeader = (getState) => {
   const accessToken = getState().auth.accessToken;
 
@@ -135,3 +136,11 @@ export const tokenConfigHeader = (getState) => {
 
   return header;
 };
+
+// Selector
+
+// Memoization
+export const getAccessToken = createSelector(
+  (state) => state.auth,
+  (auth) => auth.accessToken
+);
