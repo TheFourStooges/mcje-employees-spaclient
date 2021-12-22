@@ -99,7 +99,7 @@ function Layout(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Employee Console
+            {'Mimililu & Co. Admin Console'}
           </Typography>
           {authenticated ? authLinks : guestLinks}
         </Toolbar>
