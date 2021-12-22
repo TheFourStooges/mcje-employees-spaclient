@@ -13,7 +13,7 @@ import { useFormContext, Controller } from 'react-hook-form';
 //   },
 // ];
 
-const FormInputDropdown = ({ name, control, label, options }) => {
+const FormInputDropdown = ({ name, control, label, options, ...rest }) => {
   const generateSingleOptions = () => {
     return options.map((option) => {
       return (
@@ -25,7 +25,7 @@ const FormInputDropdown = ({ name, control, label, options }) => {
   };
 
   return (
-    <FormControl size={'small'}>
+    <FormControl size={'medium'} fullWidth variant='standard'>
       <InputLabel>{label}</InputLabel>
       <Controller
         render={({ field: { onChange, value } }) => (

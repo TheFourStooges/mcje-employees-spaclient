@@ -2,7 +2,7 @@ import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import TextField from '@material-ui/core/TextField';
 
-const FormInputText = ({ name, control, label }) => {
+const FormInputText = ({ name, control, label, ...rest }) => {
   return (
     <Controller
       name={name}
@@ -21,6 +21,7 @@ const FormInputText = ({ name, control, label }) => {
           fullWidth
           label={label}
           variant="standard"
+          {...rest}
         />
       )}
     />
