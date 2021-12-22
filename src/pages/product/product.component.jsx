@@ -1,3 +1,4 @@
+import { Container } from '@mui/material';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import ProductForm from '../../components/product-form/product-form.component';
@@ -19,9 +20,9 @@ const ProductPage = () => {
   // });
 
   return (
-    <>
+    <Container maxWidth='xl'>
       <ProductForm id={productId} />
-    </>
+    </Container>
   );
 };
 
