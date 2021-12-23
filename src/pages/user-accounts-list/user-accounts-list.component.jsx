@@ -51,7 +51,7 @@ const UserAccountsListPage = (props) => {
         }}
         rowDoubleClickHandler={rowDoubleClickHandler}
       />
-      {/* <Fab
+      <Fab
         color="primary"
         aria-label="add"
         style={{
@@ -62,10 +62,10 @@ const UserAccountsListPage = (props) => {
           left: 'auto',
           position: 'fixed',
         }}
-        onClick={() => navigate('/customers/add')}
+        onClick={() => navigate('/accounts/add')}
       >
         <AddIcon />
-      </Fab> */}
+      </Fab>
     </>
   );
 };

@@ -42,7 +42,9 @@ const UserAccountForm = (props) => {
     name: Yup.string().required('Name is required'),
     email: Yup.string().email().required('Email is required'),
     phone: Yup.string(),
-    role: Yup.mixed().oneOf(['admin', 'user']),
+    role: Yup.mixed().concat(
+      isAddMode ? Yup.mixed().oneOf(['admin', 'user']).required() : null
+    ),
     password: Yup.string()
       .transform((x) => (x === '' ? undefined : x))
       .concat(isAddMode ? Yup.string().required('Password required') : null)
@@ -175,6 +177,7 @@ const UserAccountForm = (props) => {
                     name="password"
                     control={control}
                     label="Password"
+                    type="password"
                   />
                 </div>
                 <div className="form-group col">
@@ -182,6 +185,7 @@ const UserAccountForm = (props) => {
                     name="password2"
                     control={control}
                     label="Retype Password"
+                    type="password"
                   />
                 </div>
               </div>
@@ -196,7 +200,7 @@ const UserAccountForm = (props) => {
             <div className="row">
               <div className="form-group col">
                 <label>Account Role</label>
-                <select {...register('role')} className={'form-control'}>
+                <select {...register('role')} className={'form-control'} disabled={!isAddMode}>
                   <option hidden disabled selected value>
                     {' '}
                     -- select an option --{' '}
