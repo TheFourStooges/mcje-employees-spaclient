@@ -33,14 +33,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const DetailsPane = ({ orderData }) => {
   console.log(orderData);
 
-  const totalDiscounts = orderData?.orderItems
+  const totalDiscounts = orderData?.orderItems ? orderData?.orderItems
     .map((orderItem) => orderItem.discountPerItem * orderItem.quantity)
-    .reduce((accum, currVal) => accum + currVal);
+    .reduce((accum, currVal) => accum + currVal, 0) : 0;
   // console.log(totalDiscounts);
 
-  const totalPaid = Math.round((orderData?.orderPayments
+  const totalPaid = orderData?.orderPayments ? Math.round((orderData?.orderPayments
     .map((payment) => parseFloat(payment.amount))
-    .reduce((accum, currVal) => accum + currVal)) * 100) / 100;
+    .reduce((accum, currVal) => accum + currVal, 0)) * 100) / 100 : 0;
   // console.log(totalPaid);
 
   return (
@@ -372,12 +372,12 @@ const FulfillmentsPane = ({ orderData, handleAdd }) => {
           <FormInputText
             name="carrier"
             control={control}
-            label="Carrier (empty if no change)"
+            label="Carrier"
           />
           <FormInputText
             name="trackingNumber"
             control={control}
-            label="Tracking Number (empty if no change)"
+            label="Tracking Number"
           />
           <label>Entry Type</label>
           <select {...register('type')} className={'form-control'}>
@@ -388,11 +388,11 @@ const FulfillmentsPane = ({ orderData, handleAdd }) => {
             {orderFulfillmentType.map((selection, idx) => (
               <option
                 key={selection}
-                // disabled={
-                //   !fulfillmentStatusToTransactionTypeMapping[
-                //     currentFulfillmentStatus
-                //   ].includes(selection)
-                // }
+                disabled={
+                  !fulfillmentStatusToTransactionTypeMapping[
+                    currentFulfillmentStatus
+                  ].includes(selection)
+                }
               >
                 {selection}
               </option>
