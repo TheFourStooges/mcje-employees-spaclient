@@ -21,7 +21,11 @@ import axios from 'axios';
 import config from '../../config/config';
 import { useSelector, connect } from 'react-redux';
 import { getAccessToken } from '../../store/auth';
-import { updateOrder } from '../../store/orders';
+import {
+  updateOrder,
+  addOrderFulfillment,
+  addOrderPayment,
+} from '../../store/orders';
 import FormInputText from '../form-components/FormInputText';
 import '../../scss/card.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -34,15 +38,15 @@ const DetailsPane = ({ orderData }) => {
     .reduce((accum, currVal) => accum + currVal);
   // console.log(totalDiscounts);
 
-  const totalPaid = orderData?.orderPayments
-    .map((payment) => payment.amount)
-    .reduce((accum, currVal) => accum + currVal);
+  const totalPaid = Math.round((orderData?.orderPayments
+    .map((payment) => parseFloat(payment.amount))
+    .reduce((accum, currVal) => accum + currVal)) * 100) / 100;
   // console.log(totalPaid);
 
   return (
     <Paper className="card">
       <header className="card__header">
-        <h5 style={{ display: 'inline' }}>Details</h5>
+        <span className="card__header__title">Details</span>
         <div style={{ display: 'inline' }}>
           <Button>Resend Receipt</Button>
         </div>
@@ -137,7 +141,10 @@ const DetailsPane = ({ orderData }) => {
               </TableRow>
               <TableRow>
                 <TableCell>Payable</TableCell>
-                <TableCell>{orderData?.totalWithTax - totalPaid}</TableCell>
+                <TableCell>
+                  {Math.round((orderData?.totalWithTax - totalPaid) * 100) /
+                    100}
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -193,7 +200,7 @@ const CustomerDetailsPane = ({ orderData, handleEdit }) => {
     <>
       <Paper className="card">
         <header className="card__header">
-          <h5>Customer</h5>
+          <span className="card__header__title">Customer</span>
           <Button onClick={handleClickOpen}>Update</Button>
         </header>
         <div>
@@ -282,7 +289,7 @@ const ShippingAddressPane = ({ orderData, handleEdit }) => {
     <>
       <Paper className="card">
         <header className="card__header">
-          <h5>Shipping Address</h5>
+          <span className="card__header__title">Shipping Address</span>
           <Button onClick={handleClickOpen}>Update</Button>
         </header>
         <div>
@@ -308,12 +315,103 @@ const ShippingAddressPane = ({ orderData, handleEdit }) => {
   );
 };
 
-const FulfillmentsPane = ({ orderData }) => {
+const FulfillmentsPane = ({ orderData, handleAdd }) => {
   // console.log(orderData);
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleClickOpen = () => setDialogOpen(true);
+  const handleClose = () => setDialogOpen(false);
+
+  const handleAddSubmit = (data) => {
+    const updateBody = {
+      description: data.description,
+      carrier: data.carrier,
+      type: data.type,
+      trackingNumber: data.trackingNumber,
+    };
+    // console.log('Update Body', updateBody);
+    setDialogOpen(false);
+    handleAdd(updateBody);
+  };
+
+  const AddFulfillmentEntryDialog = ({ onSubmit, onClose, defaultValues }) => {
+    // console.log('default values', defaultValues);
+    const methods = useForm({ defaultValues: { ...defaultValues } });
+    const { handleSubmit, reset, control, setValue, register } = methods;
+    const orderFulfillmentType = [
+      'confirm-order',
+      'hand-off-to-carrier',
+      'in-transit',
+      'delivered',
+    ];
+    const fulfillmentStatusToTransactionTypeMapping = {
+      'await-confirmation': ['confirm-order'],
+      'confirmed-and-prep': ['hand-off-to-carrier'],
+      shipping: ['in-transit', 'delivered'],
+      fulfilled: [],
+    };
+    const currentFulfillmentStatus = orderData?.fulfillmentStatus;
+
+    return (
+      <Dialog open={dialogOpen} onClose={onClose}>
+        <DialogTitle>Add Fulfillment History Entry</DialogTitle>
+        <DialogContent
+          style={{
+            display: 'grid',
+            gridRowGap: '20px',
+            padding: '20px',
+            // margin: '10px 300px'
+          }}
+        >
+          <FormInputText
+            name="description"
+            control={control}
+            label="Brief Description"
+          />
+          <FormInputText
+            name="carrier"
+            control={control}
+            label="Carrier (empty if no change)"
+          />
+          <FormInputText
+            name="trackingNumber"
+            control={control}
+            label="Tracking Number (empty if no change)"
+          />
+          <label>Entry Type</label>
+          <select {...register('type')} className={'form-control'}>
+            <option hidden disabled selected value>
+              {' '}
+              -- select an option --{' '}
+            </option>
+            {orderFulfillmentType.map((selection, idx) => (
+              <option
+                key={selection}
+                // disabled={
+                //   !fulfillmentStatusToTransactionTypeMapping[
+                //     currentFulfillmentStatus
+                //   ].includes(selection)
+                // }
+              >
+                {selection}
+              </option>
+            ))}
+          </select>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={handleSubmit(onSubmit)}>Save Changes</Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+
   return (
     <Paper className="card">
       <header className="card__header">
-        <h5>Fulfillments</h5>
+        <span className="card__header__title">Fulfillment History Entry</span>
+        <Button onClick={handleClickOpen}>Add Entry</Button>
       </header>
       <TableContainer>
         <Table>
@@ -339,15 +437,98 @@ const FulfillmentsPane = ({ orderData }) => {
           </TableBody>
         </Table>
       </TableContainer>
+      <AddFulfillmentEntryDialog
+        onSubmit={handleAddSubmit}
+        onClose={handleClose}
+      />
     </Paper>
   );
 };
 
-const PaymentsPane = ({ orderData }) => {
+const PaymentsPane = ({ orderData, handleAdd }) => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleClickOpen = () => setDialogOpen(true);
+  const handleClose = () => setDialogOpen(false);
+
+  const handleAddSubmit = (data) => {
+    const updateBody = {
+      transactionId: data.transactionId,
+      type: data.type,
+      amount: data.amount,
+    };
+    // console.log('Update Body', updateBody);
+    setDialogOpen(false);
+    handleAdd(updateBody);
+  };
+
+  const AddPaymentEntryDialog = ({ onSubmit, onClose, defaultValues }) => {
+    // console.log('default values', defaultValues);
+    const methods = useForm({ defaultValues: { ...defaultValues } });
+    const { handleSubmit, reset, control, setValue, register } = methods;
+    const orderPaymentType = [
+      'card',
+      'bank-transfer',
+      'cash-on-delivery',
+      'refund',
+    ];
+    const currentPaymentStatus = orderData?.paymentStatus;
+
+    return (
+      <Dialog open={dialogOpen} onClose={onClose}>
+        <DialogTitle>Add Payment Entry</DialogTitle>
+        <DialogContent
+          style={{
+            display: 'grid',
+            gridRowGap: '20px',
+            padding: '20px',
+            // margin: '10px 300px'
+          }}
+        >
+          <FormInputText
+            name="transactionId"
+            control={control}
+            label="Transaction ID"
+          />
+          <FormInputText
+            name="amount"
+            control={control}
+            label="Amount"
+            inputProps={{ step: '0.01' }}
+          />
+          <label>Payment Type</label>
+          <select {...register('type')} className={'form-control'}>
+            <option hidden disabled selected value>
+              {' '}
+              -- select an option --{' '}
+            </option>
+            {orderPaymentType.map((selection, idx) => (
+              <option
+                key={selection}
+                // disabled={
+                //   !fulfillmentStatusToTransactionTypeMapping[
+                //     currentFulfillmentStatus
+                //   ].includes(selection)
+                // }
+              >
+                {selection}
+              </option>
+            ))}
+          </select>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={handleSubmit(onSubmit)}>Save Changes</Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+
   return (
     <Paper className="card">
       <header className="card__header">
-        <h5>Payments</h5>
+        <span className="card__header__title">Payments</span>
+        <Button onClick={handleClickOpen}>Add Entry</Button>
       </header>
       <TableContainer>
         <Table>
@@ -373,6 +554,8 @@ const PaymentsPane = ({ orderData }) => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <AddPaymentEntryDialog onSubmit={handleAddSubmit} onClose={handleClose} />
     </Paper>
   );
 };
@@ -402,6 +585,37 @@ const OrderView = ({ orderId, accessToken, updateOrder }) => {
     console.log('Updated order');
   };
 
+  const handleAddFulfillment = async (fulfillmentBody) => {
+    console.log('add fulfillment', fulfillmentBody);
+    // addOrderFulfillment(orderId, fulfillmentBody)
+    // .then(() => fetchData());
+
+    const resp = await axios.request({
+      baseURL: config.baseUrl,
+      url: '/order/' + orderId + '/add-fulfillment',
+      method: 'POST',
+      data: fulfillmentBody,
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    console.log(resp);
+    await fetchData();
+    console.log(order);
+  };
+  const handleAddPayment = async (paymentBody) => {
+    // addOrderPayment(orderId, paymentBody);
+    // // .then(() => fetchData());
+    const resp = await axios.request({
+      baseURL: config.baseUrl,
+      url: '/order/' + orderId + '/add-payment',
+      method: 'POST',
+      data: paymentBody,
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    console.log(resp);
+    await fetchData();
+    console.log(order);
+  };
+
   useEffect(() => {
     console.log('OrderView mounted');
 
@@ -412,8 +626,8 @@ const OrderView = ({ orderId, accessToken, updateOrder }) => {
     <div className="row">
       <div className="col-lg-8">
         <DetailsPane orderData={order} />
-        <FulfillmentsPane orderData={order} />
-        <PaymentsPane orderData={order} />
+        <FulfillmentsPane orderData={order} handleAdd={handleAddFulfillment} />
+        <PaymentsPane orderData={order} handleAdd={handleAddPayment} />
       </div>
       <div className="col-lg-4">
         <CustomerDetailsPane orderData={order} handleEdit={handleOrderUpdate} />
@@ -426,6 +640,9 @@ const OrderView = ({ orderId, accessToken, updateOrder }) => {
 const mapStateToProps = (state) => ({
   accessToken: state.auth.accessToken,
 });
-export default connect(mapStateToProps, { getAccessToken, updateOrder })(
-  OrderView
-);
+export default connect(mapStateToProps, {
+  getAccessToken,
+  updateOrder,
+  addOrderFulfillment,
+  addOrderPayment,
+})(OrderView);
