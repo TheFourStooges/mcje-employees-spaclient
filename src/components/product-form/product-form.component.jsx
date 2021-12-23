@@ -9,6 +9,7 @@ import { useSelector, useDispatch, connect } from 'react-redux';
 import { addProduct, updateProduct, deleteProduct } from '../../store/products';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../../scss/sticky.scss';
 import {
   Container,
   Fab,
@@ -22,6 +23,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  ImageListItemBar,
+  IconButton
 } from '@mui/material';
 
 import {
@@ -29,6 +32,7 @@ import {
   FormInputDropdown,
   FormInputMultiCheckbox,
 } from '../form-components';
+import ImageSelector from '../image-selector/image-selector.component';
 
 import config from '../../config/config';
 import attributesEnum from '../../config/attributesEnum';
@@ -38,6 +42,11 @@ const axios = require('axios');
 // https://jasonwatmore.com/post/2020/10/14/react-hook-form-combined-add-edit-create-update-form-example
 // https://jasonwatmore.com/post/2020/04/20/react-formik-combined-add-edit-create-update-form-example
 const ProductForm = (props) => {
+  const [product, setProduct] = useState({});
+  const [categories, setCategories] = useState([]);
+  const [productAssets, setProductAssets] = useState([]);
+  const [imageDialogOpen, setImageDialogOpen] = useState(false);
+
   // If params has id defined => edit mode
   // const { history, match } = props;
   const navigate = useNavigate();
@@ -160,6 +169,8 @@ const ProductForm = (props) => {
       ...restOfBody
     } = fields;
 
+    const assetIds = productAssets.map((asset) => asset.id);
+
     const newBody = {
       ...restOfBody,
       properties: {
@@ -190,6 +201,7 @@ const ProductForm = (props) => {
       categoryId: {
         slug: categorySlug,
       },
+      assets: [...assetIds],
     };
 
     if (isAddMode) {
@@ -211,30 +223,31 @@ const ProductForm = (props) => {
     }
   };
 
-  const [product, setProduct] = useState({});
-  const [categories, setCategories] = useState([]);
-  const [assets, setAssets] = useState([]);
-  const [imageDialogOpen, setImageDialogOpen] = useState(false);
-
   const handleImageDlgOpen = () => setImageDialogOpen(true);
   const handleImageDlgClose = () => setImageDialogOpen(false);
   const handleImageDlgSubmit = (images) => {
-    setAssets(images);
+    setProductAssets(images);
     setImageDialogOpen(false);
   };
 
   const SelectImagesDialog = ({ onSubmit, onClose }) => {
     // console.log('default values', defaultValues);
+    const [selected, setSelected] = useState(productAssets);
 
     return (
       <Dialog open={imageDialogOpen} onClose={onClose}>
         <DialogTitle>Select Images to be associated</DialogTitle>
         <DialogContent>
-          Lorem ipsum dolor sit amet.
+          <ImageSelector
+            selectedImages={selected}
+            setSelectedImages={setSelected}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={handleSubmit(onSubmit)}>Save Changes</Button>
+          <Button onClick={() => handleImageDlgSubmit(selected)}>
+            Save Changes
+          </Button>
         </DialogActions>
       </Dialog>
     );
@@ -308,7 +321,7 @@ const ProductForm = (props) => {
 
           console.log(data.assets);
           setProduct(data);
-          setAssets(data.assets);
+          setProductAssets(data.assets);
         });
     }
 
@@ -818,19 +831,39 @@ const ProductForm = (props) => {
             </div>
             <Box sx={{ width: '100%', height: 500, overflowY: 'scroll' }}>
               <ImageList variant="masonry" cols={3} gap={8}>
-                {assets.map((asset) => (
+                {productAssets.map((asset) => (
                   <ImageListItem key={asset.id}>
                     <img
                       src={`${config.serverHost}${asset.path}`}
                       alt={asset.description}
                       loading="lazy"
                     />
+                    <ImageListItemBar
+                      sx={{
+                        background:
+                          'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
+                          'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+                      }}
+                      title={asset.description}
+                      position="top"
+                      actionIcon={
+                        <IconButton
+                          sx={{ color: 'white' }}
+                          aria-label={`star ${asset.description}`}
+                        >
+                        </IconButton>
+                      }
+                      actionPosition="left"
+                    />
                   </ImageListItem>
                 ))}
               </ImageList>
             </Box>
 
-            <SelectImagesDialog onSubmit={handleImageDlgSubmit} onClose={handleImageDlgClose} />
+            <SelectImagesDialog
+              onSubmit={handleImageDlgSubmit}
+              onClose={handleImageDlgClose}
+            />
           </Paper>
         </div>
 
