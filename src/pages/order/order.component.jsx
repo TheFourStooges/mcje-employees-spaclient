@@ -23,9 +23,9 @@ const OrderPage = (props) => {
   // }, []);
 
   return (
-    <Container maxWidth="xl">
+    <>
       <OrderView orderId={orderId} />
-    </Container>
+    </>
   );
 };
 

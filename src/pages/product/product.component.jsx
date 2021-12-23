@@ -20,9 +20,9 @@ const ProductPage = () => {
   // });
 
   return (
-    <Container maxWidth='xl'>
+    <>
       <ProductForm id={productId} />
-    </Container>
+    </>
   );
 };
 
