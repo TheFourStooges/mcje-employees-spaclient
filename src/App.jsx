@@ -38,6 +38,11 @@ import ShippingMethodPage from './pages/shipping-method/shipping-method.componen
 import ShippingMethodsListPage from './pages/shipping-methods-list/shipping-methods-list.component';
 import ShippingMethodAddPage from './pages/shipping-method-add/shipping-method-add.component';
 
+import UserAccountsPage from './pages/user-accounts/user-accounts.component';
+import UserAccountPage from './pages/user-account/user-account.component';
+import UserAccountsListPage from './pages/user-accounts-list/user-accounts-list.component';
+import UserAccountAddPage from './pages/user-account-add/user-account-add.component';
+
 function App(props) {
   useEffect(() => {
     props.loadUser();
@@ -84,6 +89,12 @@ function App(props) {
             <Route path=":shippingMethodId" element={<ShippingMethodPage />} />
             <Route path="add" element={<ShippingMethodAddPage />} />
             <Route index element={<ShippingMethodsListPage />} />
+          </Route>
+
+          <Route path="accounts" element={<UserAccountsPage />}>
+            <Route path=":accountId" element={<UserAccountPage />} />
+            <Route path="add" element={<UserAccountAddPage />} />
+            <Route index element={<UserAccountsListPage />} />
           </Route>
         </Route>
       </Routes>
