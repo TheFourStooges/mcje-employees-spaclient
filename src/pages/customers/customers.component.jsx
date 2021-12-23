@@ -6,7 +6,7 @@ const CustomersPage = () => {
   return (
     <>
       <Typography variant="h5">Customers</Typography>
-
+      <br/>
       <Outlet />
     </>
   );
