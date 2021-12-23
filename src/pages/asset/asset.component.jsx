@@ -8,11 +8,9 @@ const AssetPage = () => {
   const { assetId } = useParams();
 
   return (
-    <Container maxWidth="lg">
-      <Paper>
+    <>
         <AssetForm id={assetId} />
-      </Paper>
-    </Container>
+    </>
   );
 };
 

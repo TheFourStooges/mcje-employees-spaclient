@@ -6,6 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 import { useSelector, useDispatch, connect } from 'react-redux';
 import { loadAssets, getAssets } from '../../store/assets';
+import config from '../../config/config';
 
 import DataTable from '../../components/data-table/data-table.component';
 

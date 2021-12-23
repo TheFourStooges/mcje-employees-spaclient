@@ -1,12 +1,14 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import { Typography } from '@mui/material';
 
 const CustomersPage = () => {
   return (
-    <div>
-      CUSTOMERS
+    <>
+      <Typography variant="h5">Customers</Typography>
+
       <Outlet />
-    </div>
+    </>
   );
 };
 

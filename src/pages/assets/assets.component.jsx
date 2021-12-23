@@ -4,15 +4,11 @@ import { Outlet } from 'react-router-dom';
 
 const AssetsPage = () => {
   return (
-    <div>
-      <Container maxWidth={false}>
-        <div>
-          <Typography variant="h5">Assets</Typography>
-        </div>
-        <br />
-        <Outlet />
-      </Container>
-    </div>
+    <>
+      <Typography variant="h5">Assets</Typography>
+      <br />
+      <Outlet />
+    </>
   );
 };
 

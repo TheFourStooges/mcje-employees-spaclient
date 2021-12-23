@@ -5,15 +5,11 @@ import { Outlet } from 'react-router-dom';
 
 const CategoriesPage = () => {
   return (
-    <div>
-      <Container maxWidth={false}>
-        <div>
-          <Typography variant="h5">Categories</Typography>
-        </div>
-        <br />
-        <Outlet />
-      </Container>
-    </div>
+    <>
+      <Typography variant="h5">Categories</Typography>
+      <br />
+      <Outlet />
+    </>
   );
 };
 
