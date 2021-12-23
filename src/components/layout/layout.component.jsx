@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Menu, MenuItem } from '@mui/material';
+import { Menu, MenuItem, Container } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import { Link, Outlet } from 'react-router-dom';
@@ -19,7 +19,7 @@ import SidebarDrawer from '../sidebar-drawer/sidebar-drawer.component';
 
 const drawerWidth = 240;
 
-function Layout(props) {
+const Layout = (props) => {
   const { window } = props;
   const { authenticated, user } = props.auth;
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -152,7 +152,9 @@ function Layout(props) {
       >
         <Toolbar />
 
-        <Outlet />
+        <Container maxWidth="xl">
+          <Outlet />
+        </Container>
         {/* <Typography paragraph>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
           tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
@@ -183,7 +185,7 @@ function Layout(props) {
       </Box>
     </Box>
   );
-}
+};
 
 Layout.propTypes = {
   /**
