@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { addAsset, updateAsset, deleteAsset } from '../../store/assets';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container } from '@mui/material';
+import { Container, Paper, Typography } from '@mui/material';
 
 import config from '../../config/config';
 // import attributesEnum from '../../config/attributesEnum';
@@ -46,11 +46,10 @@ const AssetForm = (props) => {
     console.log('onSubmit', fields, formState);
     const { description, productId, image } = fields;
 
-    let fd = new FormData();
-    fd.append('description', description);
-    fd.append('image', image[0]);
-
     if (isAddMode) {
+      let fd = new FormData();
+      fd.append('description', description);
+      fd.append('image', image[0]);
       // https://stackoverflow.com/questions/49579640/how-to-send-data-correct-axios-error-multipart-boundary-not-found
       // console.log(isAddMode, fields);
       props.addAsset(fd);
@@ -115,17 +114,12 @@ const AssetForm = (props) => {
 
   return (
     <>
-      <div>
-        <img
-          src={asset.url ? asset.url : config.serverHost + asset.path}
-          alt={asset.description}
-          width="100vw"
-        />
-      </div>
       <form onSubmit={handleSubmit(onSubmit)} onReset={reset}>
-        <h1>{isAddMode ? 'Add Asset' : 'Edit Asset'}</h1>
+        <Typography variant="h5">
+          {isAddMode ? 'Add Asset' : 'Edit Asset'}
+        </Typography>
 
-        <div>
+        <Paper className="card">
           <div className="row">
             <div className="form-group col">
               <label>URL</label>
@@ -169,7 +163,9 @@ const AssetForm = (props) => {
               />
             </div>
           </div>
+        </Paper>
 
+        <Paper className="card">
           <div className="row">
             <div className="form-group col">
               <label>Description</label>
@@ -179,41 +175,52 @@ const AssetForm = (props) => {
               />
             </div>
           </div>
+        </Paper>
 
+        <Paper className="card">
+          <div style={{ width: '75%' }}>
+            <img
+              src={asset.url ? asset.url : config.serverHost + asset.path}
+              alt={asset.description}
+              style={{ maxWidth: '100%', maxHeight: '100%' }}
+            />
+          </div>
           <div className="row">
             <div className="form-group col">
               <label>Image Upload: </label>
               <input {...register('image')} type="file" disabled={!isAddMode} />
             </div>
           </div>
-        </div>
+        </Paper>
 
         {/* // End */}
 
         {/* Submit and Reset button  */}
-        <div className="form-group">
-          <button
-            type="submit"
-            disabled={formState.isSubmitting}
-            className="btn btn-primary"
-          >
-            {formState.isSubmitting && (
-              <span className="spinner-border spinner-border-sm mr-1"></span>
-            )}
-            Save
-          </button>
-          <button
-            type="button"
-            disabled={formState.isSubmitting}
-            className="btn"
-            onClick={onDelete}
-          >
-            Delete
-          </button>
-          <Link to={isAddMode ? '.' : '..'} className="btn btn-link">
-            Cancel
-          </Link>
-        </div>
+        <Paper className="card">
+          <div className="form-group">
+            <button
+              type="submit"
+              disabled={formState.isSubmitting}
+              className="btn btn-primary"
+            >
+              {formState.isSubmitting && (
+                <span className="spinner-border spinner-border-sm mr-1"></span>
+              )}
+              Save
+            </button>
+            <button
+              type="button"
+              disabled={formState.isSubmitting}
+              className="btn"
+              onClick={onDelete}
+            >
+              Delete
+            </button>
+            <Link to={isAddMode ? '.' : '..'} className="btn btn-link">
+              Cancel
+            </Link>
+          </div>
+        </Paper>
       </form>
     </>
   );
