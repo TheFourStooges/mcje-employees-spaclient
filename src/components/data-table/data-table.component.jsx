@@ -23,7 +23,7 @@ const DataTable = (props) => {
         components={{ Toolbar: GridToolbar }}
         rowCount={totalResults}
         pageSize={limit}
-        rowsPerPageOptions={[5, 10, 15, 20]}
+        rowsPerPageOptions={[5, 10, 15, 20, 50, 100]}
         pagination
         paginationMode="server"
         loading={loading}
