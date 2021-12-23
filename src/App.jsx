@@ -33,6 +33,11 @@ import AssetPage from './pages/asset/asset.component';
 import AssetsListPage from './pages/assets-list/assets-list.component';
 import AssetAddPage from './pages/asset-add/asset-add.component';
 
+import ShippingMethodsPage from './pages/shipping-methods/shipping-methods.component';
+import ShippingMethodPage from './pages/shipping-method/shipping-method.component';
+import ShippingMethodsListPage from './pages/shipping-methods-list/shipping-methods-list.component';
+import ShippingMethodAddPage from './pages/shipping-method-add/shipping-method-add.component';
+
 function App(props) {
   useEffect(() => {
     props.loadUser();
@@ -73,6 +78,12 @@ function App(props) {
             <Route path=":assetId" element={<AssetPage />} />
             <Route path="add" element={<AssetAddPage />} />
             <Route index element={<AssetsListPage />} />
+          </Route>
+
+          <Route path="shipping-methods" element={<ShippingMethodsPage />}>
+            <Route path=":shippingMethodId" element={<ShippingMethodPage />} />
+            <Route path="add" element={<ShippingMethodAddPage />} />
+            <Route index element={<ShippingMethodsListPage />} />
           </Route>
         </Route>
       </Routes>
