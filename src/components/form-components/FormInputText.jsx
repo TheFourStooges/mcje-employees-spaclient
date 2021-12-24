@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import TextField from '@material-ui/core/TextField';
 
 const FormInputText = ({ name, control, label, ...rest }) => {

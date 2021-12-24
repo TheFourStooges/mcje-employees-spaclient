@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,7 +10,7 @@ import { connect } from 'react-redux';
 import { addAsset, updateAsset, deleteAsset } from '../../store/assets';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Paper, Typography } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 
 import config from '../../config/config';
 // import attributesEnum from '../../config/attributesEnum';
@@ -110,6 +111,7 @@ const AssetForm = (props) => {
           setAsset(data);
         });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

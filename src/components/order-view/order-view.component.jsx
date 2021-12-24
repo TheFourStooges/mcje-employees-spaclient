@@ -1,13 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import {
   Paper,
-  Box,
-  Typography,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Table,
   TableBody,
@@ -16,10 +14,10 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import config from '../../config/config';
-import { useSelector, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { getAccessToken } from '../../store/auth';
 import {
   updateOrder,
@@ -620,6 +618,7 @@ const OrderView = ({ orderId, accessToken, updateOrder }) => {
     console.log('OrderView mounted');
 
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

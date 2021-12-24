@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { useSelector, useDispatch, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { loadUser } from './store/auth';
 
 import PrivateOutlet from './common/PrivateOutlet';
@@ -46,6 +46,7 @@ import UserAccountAddPage from './pages/user-account-add/user-account-add.compon
 function App(props) {
   useEffect(() => {
     props.loadUser();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // https://reactrouter.com/docs/en/v6/getting-started/overview

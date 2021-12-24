@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, Navigate } from 'react-router';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { CircularProgress } from '@mui/material';
 import Layout from '../components/layout/layout.component';
 

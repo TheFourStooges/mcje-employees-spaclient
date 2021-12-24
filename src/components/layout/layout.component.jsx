@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import { Menu, MenuItem, Container } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../store/auth';
 

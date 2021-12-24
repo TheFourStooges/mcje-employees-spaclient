@@ -13,7 +13,7 @@ import {
 } from '../../store/categories';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container } from '@mui/material';
+// import { Container } from '@mui/material';
 
 import config from '../../config/config';
 // import attributesEnum from '../../config/attributesEnum';
@@ -41,7 +41,9 @@ const CategoryForm = (props) => {
     handleSubmit,
     reset,
     setValue,
+    // eslint-disable-next-line no-unused-vars
     getValues,
+    // eslint-disable-next-line no-unused-vars
     errors,
     formState,
   } = useForm({
@@ -68,6 +70,7 @@ const CategoryForm = (props) => {
     }
   };
 
+    // eslint-disable-next-line no-unused-vars
   const [category, setCategory] = useState({});
 
   useEffect(() => {
@@ -100,6 +103,7 @@ const CategoryForm = (props) => {
           setCategory(data);
         });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

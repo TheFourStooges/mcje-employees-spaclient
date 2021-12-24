@@ -12,6 +12,7 @@ const FormInputSlider = ({
 
   useEffect(() => {
     if (sliderValue) setValue(name, sliderValue);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sliderValue]);
 
   const handleChange = (event, newValue) => {

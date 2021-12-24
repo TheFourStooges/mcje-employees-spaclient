@@ -33,6 +33,7 @@ const FormInputMultiCheckbox = ({ name, control, setValue, label, options }) => 
 
   useEffect(() => {
     setValue(name, selectedItems);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedItems]);
 
   return (
@@ -46,6 +47,7 @@ const FormInputMultiCheckbox = ({ name, control, setValue, label, options }) => 
               control={
                 <Controller
                   name={name}
+                  // eslint-disable-next-line no-empty-pattern
                   render={({}) => {
                     return (
                       <Checkbox

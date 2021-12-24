@@ -4,7 +4,7 @@ import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller } from "react-hook-form";
 const DATE_FORMAT = "dd-MMM-yy";
 
 const FormInputDate = ({ name, control, label }) => {

@@ -1,11 +1,12 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
-import { useSelector, useDispatch, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { addUser, updateUser, deleteUser } from '../../store/users';
 
 import DataTable from '../data-table/data-table.component';
@@ -15,13 +16,11 @@ import { Typography, Paper } from '@mui/material';
 
 import {
   FormInputText,
-  FormInputDropdown,
-  FormInputMultiCheckbox,
 } from '../form-components';
-import ImageSelector from '../image-selector/image-selector.component';
+// import ImageSelector from '../image-selector/image-selector.component';
 
 import config from '../../config/config';
-import attributesEnum from '../../config/attributesEnum';
+// import attributesEnum from '../../config/attributesEnum';
 
 const axios = require('axios');
 
@@ -125,6 +124,7 @@ const CustomerForm = (props) => {
           setUser(data);
         });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
