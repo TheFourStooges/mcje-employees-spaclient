@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { addProduct, updateProduct, deleteProduct } from '../../store/products';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../scss/sticky.scss';
 import {
   Typography,
   Paper,

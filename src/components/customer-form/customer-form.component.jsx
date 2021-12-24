@@ -11,7 +11,6 @@ import { addUser, updateUser, deleteUser } from '../../store/users';
 
 import DataTable from '../data-table/data-table.component';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../scss/sticky.scss';
 import { Typography, Paper } from '@mui/material';
 
 import {
