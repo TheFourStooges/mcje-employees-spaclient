@@ -388,11 +388,11 @@ const FulfillmentsPane = ({ orderData, handleAdd }) => {
             {orderFulfillmentType.map((selection, idx) => (
               <option
                 key={selection}
-                disabled={
-                  !fulfillmentStatusToTransactionTypeMapping[
-                    currentFulfillmentStatus
-                  ].includes(selection)
-                }
+                // disabled={
+                //   !fulfillmentStatusToTransactionTypeMapping[
+                //     currentFulfillmentStatus
+                //   ].includes(selection)
+                // }
               >
                 {selection}
               </option>
